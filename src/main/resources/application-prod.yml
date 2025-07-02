@@ -1,0 +1,109 @@
+# Production Environment Configuration
+# Secrets and sensitive configs should come from external systems (AWS Parameter Store, etc.)
+
+spring:
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: validate  # Only validate, never modify schema
+    properties:
+      hibernate:
+        format_sql: false
+        use_sql_comments: false
+
+  cache:
+    type: redis
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: ${REDIS_DB:0}
+
+  # Production database settings
+  datasource:
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:20}
+      minimum-idle: ${DB_MIN_IDLE:10}
+      connection-timeout: ${DB_CONNECTION_TIMEOUT:30000}
+      idle-timeout: ${DB_IDLE_TIMEOUT:600000}
+      max-lifetime: ${DB_MAX_LIFETIME:1800000}
+      leak-detection-threshold: ${DB_LEAK_DETECTION:60000}
+
+  # Production relies on manual database scripts
+
+# Production logging - structured JSON for log aggregation
+logging:
+  level:
+    com.wildlife: INFO
+    org.springframework.security: WARN
+    org.hibernate.SQL: WARN
+    org.hibernate.type.descriptor.sql.BasicBinder: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: /var/log/wildlife-api/application.log
+
+# Production management endpoints - restricted access
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never  # Don't expose internal details
+  server:
+    port: 8081  # Run management on different port
+
+# Production wildlife configuration
+wildlife:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:https://wildlife.your-domain.com}
+    allow-credentials: true
+    max-age: 86400  # 24 hours
+
+  pagination:
+    default-page-size: ${DEFAULT_PAGE_SIZE:20}
+    max-page-size: ${MAX_PAGE_SIZE:100}
+
+  jwt:
+    secret: ${JWT_SECRET}  # Must be set via environment variable
+    expiration: ${JWT_EXPIRATION:3600000}  # 1 hour in production
+    issuer: ${JWT_ISSUER:wildlife-api}
+
+# Swagger disabled for production security
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: false
+
+# External configuration references
+# In real production, these would come from:
+# - AWS Parameter Store: aws-parameterstore:/wildlife-api/
+# - AWS Secrets Manager: aws-secretsmanager:/wildlife-api/secrets/
+# - Kubernetes Secrets
+# - HashiCorp Vault
+# - Azure Key Vault
+
+# Example external config import (uncomment for cloud deployment)
+# spring:
+#   config:
+#     import:
+#       - aws-parameterstore:/wildlife-api/
+#       - aws-secretsmanager:/wildlife-api/secrets/
+
+# Security headers for production
+server:
+  error:
+    include-message: never
+    include-binding-errors: never
+    include-stacktrace: never
+    include-exception: false
+
+# JWT configuration now included in main wildlife section above
+
+cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME}
+  api-key: ${CLOUDINARY_API_KEY}
+  api-secret: ${CLOUDINARY_API_SECRET} 

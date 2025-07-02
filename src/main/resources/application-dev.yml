@@ -1,0 +1,52 @@
+# Development Environment Configuration
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update  # Allow Hibernate to update schema automatically in dev
+    properties:
+      hibernate:
+        format_sql: false
+        use_sql_comments: false
+
+  cache:
+    type: simple
+
+  # Development uses JPA for schema management
+
+# Development logging
+logging:
+  level:
+    com.wildlife: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+# Development-specific settings
+wildlife:
+  cors:
+    allowed-origins: "http://localhost:3000,http://localhost:3001,http://localhost:3002,http://localhost:3003"
+  jwt:
+    secret: wildlife-dev-secret-key-change-in-production
+    expiration: 86400000 # 24 hours for development
+
+# Swagger enabled for development
+springdoc:
+  swagger-ui:
+    enabled: true
+    operations-sorter: alpha
+    tags-sorter: alpha
+  info:
+    title: "Wildlife Conservation Platform API - Development"
+    description: "Development environment for wildlife conservation API"
+    version: "1.0.0-DEV"
+
+cloudinary:
+  cloud-name: dev-cloud-name
+  api-key: dev-api-key
+  api-secret: dev-api-secret
+
+# Cloudinary and other external service configurations can be added here as needed 

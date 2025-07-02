@@ -1,0 +1,61 @@
+# Staging Environment Configuration
+# Production-like environment for pre-production testing
+
+spring:
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        use_sql_comments: false
+
+  cache:
+    type: redis
+    redis:
+      host: ${REDIS_HOST:staging-redis}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+
+  datasource:
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:15}
+      minimum-idle: ${DB_MIN_IDLE:5}
+
+# Staging logging - more verbose than production
+logging:
+  level:
+    com.wildlife: INFO
+    org.springframework.security: INFO
+    org.hibernate.SQL: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: ${LOG_FILE:/var/log/wildlife-api/staging.log}
+
+# Staging management endpoints - more access than production
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+# Staging CORS - restricted but includes staging domains
+wildlife:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:https://staging.wildlife.com,https://staging-admin.wildlife.com}
+    allow-credentials: true
+
+# Swagger enabled for staging testing
+springdoc:
+  swagger-ui:
+    enabled: true
+  info:
+    title: "Wildlife Conservation Platform API - Staging"
+    description: "Staging environment for pre-production testing"
+    version: "1.0.0-STAGING"
+
+# Staging would also use external config in real scenarios
+# External references for staging secrets 

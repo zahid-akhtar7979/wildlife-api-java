@@ -1,0 +1,67 @@
+# Test Environment Configuration
+# Used for integration tests, CI/CD pipelines
+
+spring:
+  # In-memory H2 database for fast tests
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: false
+
+  h2:
+    console:
+      enabled: true
+
+  flyway:
+    enabled: false  # Disable Flyway in tests
+
+  cache:
+    type: simple
+
+# Test logging - minimal for performance
+logging:
+  level:
+    com.wildlife: WARN
+    org.springframework: WARN
+    org.hibernate: WARN
+    org.testcontainers: INFO
+  pattern:
+    console: "%d{HH:mm:ss} %-5level %logger{36} - %msg%n"
+
+# Disable security for some tests
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+# Test-specific settings
+wildlife:
+  cors:
+    allowed-origins: "*"  # Permissive for testing
+  jwt:
+    secret: test-secret-key-for-testing-environment
+    expiration: 3600000 # 1 hour for tests
+    issuer: wildlife-test-api
+
+# Swagger disabled in tests
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: false
+
+cloudinary:
+  cloud-name: test-cloud
+  api-key: test-key
+  api-secret: test-secret 
