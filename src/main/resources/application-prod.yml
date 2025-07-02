@@ -11,16 +11,12 @@ spring:
         format_sql: false
         use_sql_comments: false
 
-  cache:
-    type: redis
-    redis:
-      host: ${REDIS_HOST:localhost}
-      port: ${REDIS_PORT:6379}
-      password: ${REDIS_PASSWORD:}
-      database: ${REDIS_DB:0}
-
   # Production database settings
   datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://hopper.proxy.rlwy.net:57631/railway}
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:vxnjRELaxmwHnsKhOBtDGdDvLjXNyNwF}
+    driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: ${DB_POOL_SIZE:20}
       minimum-idle: ${DB_MIN_IDLE:10}
@@ -74,26 +70,10 @@ wildlife:
 # Swagger disabled for production security
 springdoc:
   swagger-ui:
-    enabled: false
+    enabled: true
   api-docs:
-    enabled: false
+    enabled: true
 
-# External configuration references
-# In real production, these would come from:
-# - AWS Parameter Store: aws-parameterstore:/wildlife-api/
-# - AWS Secrets Manager: aws-secretsmanager:/wildlife-api/secrets/
-# - Kubernetes Secrets
-# - HashiCorp Vault
-# - Azure Key Vault
-
-# Example external config import (uncomment for cloud deployment)
-# spring:
-#   config:
-#     import:
-#       - aws-parameterstore:/wildlife-api/
-#       - aws-secretsmanager:/wildlife-api/secrets/
-
-# Security headers for production
 server:
   error:
     include-message: never
@@ -101,9 +81,7 @@ server:
     include-stacktrace: never
     include-exception: false
 
-# JWT configuration now included in main wildlife section above
-
 cloudinary:
-  cloud-name: ${CLOUDINARY_CLOUD_NAME}
-  api-key: ${CLOUDINARY_API_KEY}
-  api-secret: ${CLOUDINARY_API_SECRET} 
+  cloud-name: ${CLOUDINARY_CLOUD_NAME:dc2tqyj5d}
+  api-key: ${CLOUDINARY_API_KEY:133449986291256}
+  api-secret: ${CLOUDINARY_API_SECRET:P80ZPfvd4LOWCN4_ew4VGwxbb7Y}
