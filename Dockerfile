@@ -24,7 +24,7 @@ COPY --from=builder /app/target/wildlife-api-*.jar app.jar
 EXPOSE 3001
 
 # Application configuration
-ENV SPRING_PROFILES_ACTIVE=dev
+ENV SPRING_PROFILES_ACTIVE=prod
 
 # Run the application (Railway provides PORT env variable)
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -Dserver.port=${PORT:-3001} -jar app.jar"]
