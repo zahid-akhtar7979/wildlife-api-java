@@ -5,17 +5,17 @@ spring:
   jpa:
     show-sql: false
     hibernate:
-      ddl-auto: update  # Allow schema creation/updates for Railway deployment
+      ddl-auto: validate  # Only validate, never modify schema
     properties:
       hibernate:
         format_sql: false
         use_sql_comments: false
 
-  # Production database settings - Railway provides these via environment variables
+  # Production database settings
   datasource:
-    url: ${DATABASE_URL}
+    url: ${DATABASE_URL:jdbc:postgresql://hopper.proxy.rlwy.net:57631/railway}
     username: ${DATABASE_USERNAME:postgres}
-    password: ${DATABASE_PASSWORD}
+    password: ${DATABASE_PASSWORD:vxnjRELaxmwHnsKhOBtDGdDvLjXNyNwF}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: ${DB_POOL_SIZE:20}
