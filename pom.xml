@@ -135,13 +135,7 @@
             <version>1.39.0</version>
         </dependency>
         
-        <!-- Development Tools -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
+        <!-- Development Tools - REMOVED: LiveReload not needed -->
         
         <dependency>
             <groupId>org.springframework.boot</groupId>
