@@ -63,7 +63,7 @@ wildlife:
     max-page-size: ${MAX_PAGE_SIZE:100}
 
   jwt:
-    secret: ${JWT_SECRET}  # Must be set via environment variable
+    secret: ${JWT_SECRET:wildlife-dev-secret-key-change-in-production}  # Must be set via environment variable
     expiration: ${JWT_EXPIRATION:3600000}  # 1 hour in production
     issuer: ${JWT_ISSUER:wildlife-api}
 
