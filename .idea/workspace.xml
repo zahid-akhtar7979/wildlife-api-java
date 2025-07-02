@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5c036b7f-3edb-4fe4-a4d9-01f691a1ebb3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../DEPLOYMENT.md" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../QUICK-START.md" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../RAILWAY-DEPLOYMENT-GUIDE.md" beforeDir="false" />
@@ -43,7 +42,14 @@
       <change beforePath="$PROJECT_DIR$/../frontend/tsconfig.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/tsconfig.node.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/vite.config.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../wildlife-api" beforeDir="false" afterPath="$PROJECT_DIR$/../wildlife-api" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/wildlife-api.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/wildlife-api.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/wildlife/article/persistence/ArticleMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/wildlife/article/persistence/ArticleMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/wildlife/user/persistence/UserMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/wildlife/user/persistence/UserMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/wildlife-api-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/wildlife-api-1.0.0.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/wildlife-api-1.0.0.jar.original" beforeDir="false" afterPath="$PROJECT_DIR$/target/wildlife-api-1.0.0.jar.original" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wildlife-ui" beforeDir="false" afterPath="$PROJECT_DIR$/../wildlife-ui" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +57,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
@@ -74,10 +80,9 @@
     &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
     &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;SHELLCHECK.PATH&quot;: &quot;/Users/zahidakhtar/Library/Application Support/JetBrains/IntelliJIdea2025.1/plugins/Shell Script/shellcheck&quot;,
     &quot;Spring Boot.WildlifeApiApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/zahidakhtar/Documents/repo/wildlife/wildlife-api-java&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -87,7 +92,7 @@
     &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -134,7 +139,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1750987436546</updated>
-      <workItem from="1750987438305" duration="33438000" />
+      <workItem from="1750987438305" duration="40378000" />
     </task>
     <servers />
   </component>

@@ -5,17 +5,17 @@ spring:
   jpa:
     show-sql: false
     hibernate:
-      ddl-auto: validate  # Only validate, never modify schema
+      ddl-auto: update  # Allow schema creation/updates for Railway deployment
     properties:
       hibernate:
         format_sql: false
         use_sql_comments: false
 
-  # Production database settings
+  # Production database settings - Railway provides these via environment variables
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://hopper.proxy.rlwy.net:57631/railway}
+    url: ${DATABASE_URL}
     username: ${DATABASE_USERNAME:postgres}
-    password: ${DATABASE_PASSWORD:vxnjRELaxmwHnsKhOBtDGdDvLjXNyNwF}
+    password: ${DATABASE_PASSWORD}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: ${DB_POOL_SIZE:20}
@@ -47,9 +47,9 @@ management:
         include: health,info
   endpoint:
     health:
-      show-details: never  # Don't expose internal details
-  server:
-    port: 8081  # Run management on different port
+      show-details: when-authorized  # Show details for debugging Railway issues
+  # server:
+  #   port: 8081  # DISABLED: Railway expects health check on main port
 
 # Production wildlife configuration
 wildlife:
@@ -76,10 +76,10 @@ springdoc:
 
 server:
   error:
-    include-message: never
-    include-binding-errors: never
-    include-stacktrace: never
-    include-exception: false
+    include-message: on_param  # Enable for Railway debugging
+    include-binding-errors: on_param
+    include-stacktrace: on_param  # Temporary for Railway debugging
+    include-exception: true
 
 cloudinary:
   cloud-name: ${CLOUDINARY_CLOUD_NAME:dc2tqyj5d}

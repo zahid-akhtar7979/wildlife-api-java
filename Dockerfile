@@ -20,11 +20,11 @@ WORKDIR /app
 # Copy the JAR file from builder stage
 COPY --from=builder /app/target/wildlife-api-*.jar app.jar
 
-# Expose port (Railway will set PORT env variable)
-EXPOSE 3001
+# Expose port (Railway will set PORT env variable dynamically)
+EXPOSE $PORT
 
 # Application configuration
 ENV SPRING_PROFILES_ACTIVE=prod
 
 # Run the application (Railway provides PORT env variable)
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -Dserver.port=${PORT:-3001} -jar app.jar"]
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -Dserver.port=${PORT:-8080} -jar app.jar"]
