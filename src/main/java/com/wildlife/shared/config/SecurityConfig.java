@@ -43,11 +43,14 @@ public class SecurityConfig {
     @Value("${wildlife.cors.allowed-headers}")
     private List<String> allowedHeaders;
 
-    @Value("${wildlife.cors.allow-credentials:true}")
+    @Value("${wildlife.cors.allow-credentials:false}")
     private boolean allowCredentials;
 
     @Value("${wildlife.cors.max-age:3600}")
     private long maxAge;
+
+    @Value("${spring.profiles.active:dev}")
+    private String activeProfile;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -62,7 +65,7 @@ public class SecurityConfig {
             .sessionManagement(session -> 
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             
-            // Configure authorization rules - TEMPORARILY PERMISSIVE FOR TESTING
+            // Configure authorization rules
             .authorizeHttpRequests(authz -> authz
                 // Public endpoints
                 .requestMatchers("/", "/favicon.ico", "/robots.txt").permitAll()
@@ -72,11 +75,14 @@ public class SecurityConfig {
                 .requestMatchers("/error").permitAll()
                 .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                 .requestMatchers("/debug/**").permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Allow preflight requests
                 
-                // TEMPORARY: Allow all API endpoints for testing
-                .requestMatchers("/api/**").permitAll()
+                // API endpoints
+                .requestMatchers("/api/auth/**").permitAll() // Public auth endpoints
+                .requestMatchers(HttpMethod.GET, "/api/articles/**").permitAll() // Public article reads
+                .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll() // Public category reads
                 
-                // All other requests
+                // All other requests need authentication
                 .anyRequest().authenticated())
             
             // Add JWT authentication filter
@@ -94,29 +100,41 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        // Set allowed origins
-        if (allowedOrigins != null && !allowedOrigins.isEmpty()) {
+        // Set allowed origins based on environment
+        if ("prod".equals(activeProfile)) {
+            // In production, explicitly set the allowed origins
+            configuration.setAllowedOrigins(Arrays.asList(
+                "https://wildlife-ui-production.up.railway.app"
+            ));
+        } else if (allowedOrigins != null && !allowedOrigins.isEmpty()) {
+            // In other environments, use configured origins
             configuration.setAllowedOrigins(allowedOrigins);
         } else {
-            configuration.setAllowedOriginPatterns(List.of("*"));
+            // Fallback to development defaults
+            configuration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:3000",
+                "http://localhost:3001"
+            ));
         }
         
         // Set allowed methods
-        if (allowedMethods != null && !allowedMethods.isEmpty()) {
-            configuration.setAllowedMethods(allowedMethods);
-        } else {
-            configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-        }
+        configuration.setAllowedMethods(Arrays.asList(
+            "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"
+        ));
         
         // Set allowed headers
-        if (allowedHeaders != null && !allowedHeaders.isEmpty()) {
-            configuration.setAllowedHeaders(allowedHeaders);
-        } else {
-            configuration.setAllowedHeaders(List.of("*"));
-        }
+        configuration.setAllowedHeaders(Arrays.asList(
+            "Authorization",
+            "Content-Type",
+            "Accept",
+            "Origin",
+            "X-Requested-With",
+            "Access-Control-Request-Method",
+            "Access-Control-Request-Headers"
+        ));
         
         // Set other CORS properties
-        configuration.setAllowCredentials(allowCredentials);
+        configuration.setAllowCredentials(false); // Set to false for better security
         configuration.setMaxAge(maxAge);
         
         // Expose commonly needed headers
