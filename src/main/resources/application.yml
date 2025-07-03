@@ -3,6 +3,7 @@
 
 server:
   port: ${PORT:3001}  # Changed to match frontend expectations
+  forward-headers-strategy: framework # Added to handle forwarded headers from Railway
 
 spring:
   application:
@@ -103,6 +104,9 @@ springdoc:
       url: /v3/api-docs
   show-actuator: true
   packages-to-scan: com.wildlife
+  server:
+    url: ${SWAGGER_SERVER_URL:https://wildlife-api-java-production.up.railway.app} # Added to ensure HTTPS in production
+    description: Wildlife Conservation Platform API
 
 # Application specific configuration
 wildlife:
