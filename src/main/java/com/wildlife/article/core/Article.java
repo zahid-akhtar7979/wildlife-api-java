@@ -63,8 +63,9 @@ public class Article {
     @Column(name = "featured", nullable = false)
     private Boolean featured = false;
 
+    @Convert(converter = JsonListConverter.class)
     @Column(name = "images", columnDefinition = "TEXT")
-    private String images = "[]";
+    private List<Map<String, Object>> images = new ArrayList<>();
 
     @Column(name = "publish_date")
     private LocalDateTime publishDate;
@@ -81,8 +82,9 @@ public class Article {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    @Convert(converter = JsonListConverter.class)
     @Column(name = "videos", columnDefinition = "TEXT")
-    private String videos = "[]";
+    private List<Map<String, Object>> videos = new ArrayList<>();
 
     @Column(name = "views", nullable = false)
     private Integer views = 0;
@@ -179,20 +181,20 @@ public class Article {
         this.tags = tags != null ? tags : new ArrayList<>();
     }
 
-    public String getImages() {
+    public List<Map<String, Object>> getImages() {
         return images;
     }
 
-    public void setImages(String images) {
-        this.images = images != null ? images : "[]";
+    public void setImages(List<Map<String, Object>> images) {
+        this.images = images != null ? images : new ArrayList<>();
     }
 
-    public String getVideos() {
+    public List<Map<String, Object>> getVideos() {
         return videos;
     }
 
-    public void setVideos(String videos) {
-        this.videos = videos != null ? videos : "[]";
+    public void setVideos(List<Map<String, Object>> videos) {
+        this.videos = videos != null ? videos : new ArrayList<>();
     }
 
     public LocalDateTime getPublishDate() {
