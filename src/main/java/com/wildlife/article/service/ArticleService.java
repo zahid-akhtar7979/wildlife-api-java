@@ -2,11 +2,11 @@ package com.wildlife.article.service;
 
 import com.wildlife.article.api.ArticleDto;
 import com.wildlife.article.core.Article;
-import com.wildlife.user.core.User;
-import com.wildlife.shared.exception.ResourceNotFoundException;
-import com.wildlife.shared.exception.AccessDeniedException;
 import com.wildlife.article.persistence.ArticleMapper;
 import com.wildlife.article.persistence.ArticleRepository;
+import com.wildlife.shared.config.JsonListConverter;
+import com.wildlife.shared.exception.ResourceNotFoundException;
+import com.wildlife.user.core.User;
 import com.wildlife.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,13 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Service class for Article entity operations.
@@ -317,9 +319,22 @@ public class ArticleService {
             dto.setUpdatedAt(row[9] != null ? ((java.sql.Timestamp) row[9]).toLocalDateTime() : null);
             dto.setPublishDate(row[10] != null ? ((java.sql.Timestamp) row[10]).toLocalDateTime() : null);
             
+            // Parse images using JsonListConverter
+            String imagesJson = (String) row[11];
+            if (imagesJson != null) {
+                try {
+                    List<Map<String, Object>> images = new JsonListConverter().convertToEntityAttribute(imagesJson);
+                    dto.setImages(images);
+                } catch (Exception e) {
+                    logger.error("Error parsing images JSON for article {}: {}", dto.getId(), e.getMessage());
+                    dto.setImages(new ArrayList<>());
+                }
+            } else {
+                dto.setImages(new ArrayList<>());
+            }
+            
             // Set default values for fields not included in native query
             dto.setContent(""); // Content not included to avoid mapping issues
-            dto.setImages(new ArrayList<>());
             dto.setVideos(new ArrayList<>());
             dto.setTags(new ArrayList<>());
             

@@ -91,7 +91,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, JpaSpec
      * Returns raw data that can be manually mapped to DTOs
      */
     @Query(value = "SELECT a.id, a.title, a.excerpt, a.category, a.published, a.featured, " +
-                   "a.views, a.author_id, a.created_at, a.updated_at, a.publish_date " +
+                   "a.views, a.author_id, a.created_at, a.updated_at, a.publish_date, " +
+                   "a.images " +
                    "FROM articles a WHERE a.published = true " +
                    "ORDER BY a.publish_date DESC", 
            nativeQuery = true)
