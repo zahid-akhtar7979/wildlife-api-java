@@ -1,0 +1,102 @@
+### Java ###
+*.class
+*.log
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+hs_err_pid*
+replay_pid*
+
+### Maven ###
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+### Spring Boot ###
+*.pid
+*.port
+spring-boot-starter/
+spring-boot-devtools/
+
+### IDE - IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+.idea_modules/
+
+### IDE - Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+
+### IDE - VS Code ###
+.vscode/
+*.code-workspace
+
+### OS Files ###
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+### Logs ###
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+### Environment Files ###
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+application-local.yml
+application-local.properties
+
+### Temporary Files ###
+*.swp
+*.swo
+*~
+tmp/
+temp/
+
+### Test Coverage ###
+coverage/
+.coverage
+.coveragerc
+htmlcov/
+
+### Database ###
+*.db
+*.sqlite
+*.sqlite3
+
+### Custom Application ###
+# Add any project-specific files to ignore here
+environment.properties
+application-dev.yml
+application-prod.yml
+application-staging.yml 
