@@ -61,23 +61,15 @@ public class UploadService {
             
             // Upload to Cloudinary with transformations
             Map<String, Object> uploadParams = ObjectUtils.asMap(
-                UploadConstants.CLOUDINARY_FOLDER, UploadConstants.FOLDER_WILDLIFE_IMAGES,
-                UploadConstants.CLOUDINARY_PUBLIC_ID, publicId,
-                UploadConstants.CLOUDINARY_TRANSFORMATION, Arrays.asList(
-                    ObjectUtils.asMap(
-                        UploadConstants.CLOUDINARY_WIDTH, UploadConstants.LARGE_WIDTH,
-                        UploadConstants.CLOUDINARY_HEIGHT, UploadConstants.LARGE_HEIGHT,
-                        UploadConstants.CLOUDINARY_CROP, UploadConstants.CROP_LIMIT,
-                        UploadConstants.CLOUDINARY_QUALITY, UploadConstants.QUALITY_AUTO_GOOD,
-                        UploadConstants.CLOUDINARY_FETCH_FORMAT, UploadConstants.FORMAT_AUTO
-                    )
-                ),
-                UploadConstants.CLOUDINARY_EAGER, Arrays.asList(
-                    // Generate responsive sizes eagerly
-                    ObjectUtils.asMap(UploadConstants.CLOUDINARY_WIDTH, UploadConstants.THUMBNAIL_WIDTH, UploadConstants.CLOUDINARY_HEIGHT, UploadConstants.THUMBNAIL_HEIGHT, UploadConstants.CLOUDINARY_CROP, UploadConstants.CROP_FILL),
-                    ObjectUtils.asMap(UploadConstants.CLOUDINARY_WIDTH, UploadConstants.MEDIUM_WIDTH, UploadConstants.CLOUDINARY_HEIGHT, UploadConstants.MEDIUM_HEIGHT, UploadConstants.CLOUDINARY_CROP, UploadConstants.CROP_LIMIT),
-                    ObjectUtils.asMap(UploadConstants.CLOUDINARY_WIDTH, UploadConstants.LARGE_WIDTH, UploadConstants.CLOUDINARY_HEIGHT, UploadConstants.LARGE_HEIGHT, UploadConstants.CLOUDINARY_CROP, UploadConstants.CROP_LIMIT)
-                )
+                "folder", UploadConstants.FOLDER_WILDLIFE_IMAGES,
+                "public_id", publicId,
+                "resource_type", "image",
+                "transformation", new com.cloudinary.Transformation()
+                    .width(UploadConstants.LARGE_WIDTH)
+                    .height(UploadConstants.LARGE_HEIGHT)
+                    .crop("limit")
+                    .quality("auto:good")
+                    .fetchFormat("auto")
             );
             
             Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(), uploadParams);
@@ -367,12 +359,12 @@ public class UploadService {
 
     private String generateImageUrl(String publicId, int width, int height, String crop) {
         return cloudinary.url()
-            .transformation(new com.cloudinary.Transformation<>()
+            .transformation(new com.cloudinary.Transformation()
                 .width(width)
                 .height(height)
                 .crop(crop)
-                .quality(UploadConstants.QUALITY_AUTO_GOOD)
-                .fetchFormat(UploadConstants.FORMAT_AUTO))
+                .quality("auto:good")
+                .fetchFormat("auto"))
             .secure(true)
             .generate(publicId);
     }

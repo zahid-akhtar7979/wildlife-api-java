@@ -45,8 +45,8 @@ springdoc:
     version: "1.0.0-DEV"
 
 cloudinary:
-  cloud-name: dev-cloud-name
-  api-key: dev-api-key
-  api-secret: dev-api-secret
+  cloud-name: ${CLOUDINARY_CLOUD_NAME:dc2tqyj5d}
+  api-key: ${CLOUDINARY_API_KEY:133449986291256}
+  api-secret: ${CLOUDINARY_API_SECRET:P80ZPfvd4LOWCN4_ew4VGwxbb7Y}
 
 # Cloudinary and other external service configurations can be added here as needed 
