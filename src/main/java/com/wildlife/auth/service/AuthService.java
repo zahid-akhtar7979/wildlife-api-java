@@ -324,4 +324,55 @@ public class AuthService {
             return StandardResponse.failure("Error approving user");
         }
     }
+
+    /**
+     * Refresh JWT token
+     */
+    public LoginResponse refreshToken() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !authentication.isAuthenticated()) {
+                return LoginResponse.failure("User not authenticated");
+            }
+
+            String email = authentication.getName();
+            Optional<User> userOptional = userRepository.findByEmail(email);
+            
+            if (userOptional.isEmpty()) {
+                logger.warn("Token refresh failed: User not found for email: {}", email);
+                return LoginResponse.failure("User not found");
+            }
+
+            User user = userOptional.get();
+
+            // Check if user is still approved and enabled
+            if (!user.getApproved()) {
+                logger.warn("Token refresh failed: User not approved for email: {}", email);
+                return LoginResponse.failure("Account pending admin approval");
+            }
+
+            if (!user.getEnabled()) {
+                logger.warn("Token refresh failed: User disabled for email: {}", email);
+                return LoginResponse.failure("Account disabled");
+            }
+
+            // Generate new JWT token
+            String token = jwtTokenProvider.generateTokenForUserId(
+                user.getId(), 
+                user.getEmail(), 
+                user.getName(),
+                java.util.List.of("ROLE_" + user.getRole().toString())
+            );
+
+            // Convert to DTO
+            UserDto userDto = userMapper.toDto(user);
+
+            logger.info("Token refresh successful for email: {}", email);
+            return LoginResponse.success(token, userDto);
+
+        } catch (Exception e) {
+            logger.error("Token refresh error", e);
+            return LoginResponse.failure("Token refresh failed");
+        }
+    }
 } 

@@ -10,7 +10,7 @@ spring:
     name: wildlife-api
   
   profiles:
-    active: ${SPRING_PROFILES_ACTIVE:prod}
+    active: ${SPRING_PROFILES_ACTIVE:dev}
   
   # Base database configuration (overridden per environment)
   datasource:
@@ -129,7 +129,7 @@ wildlife:
     max-page-size: ${MAX_PAGE_SIZE:100}
   
   upload:
-    max-image-size: ${MAX_IMAGE_SIZE:10MB}
+    max-image-size: ${MAX_IMAGE_SIZE:50MB}
     max-video-size: ${MAX_VIDEO_SIZE:100MB}
     max-multiple-images: ${MAX_MULTIPLE_IMAGES:10}
     allowed-image-types: ${ALLOWED_IMAGE_TYPES:image/jpeg,image/jpg,image/png,image/webp,image/avif}
