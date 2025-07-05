@@ -332,6 +332,17 @@ public class ArticleService {
             } else {
                 dto.setImages(new ArrayList<>());
             }
+
+            // Set author information from the joined user data
+            String authorName = (String) row[12];
+            String authorEmail = (String) row[13];
+            if (authorName != null || authorEmail != null) {
+                com.wildlife.user.api.UserDto authorDto = new com.wildlife.user.api.UserDto();
+                authorDto.setId(dto.getAuthorId());
+                authorDto.setName(authorName);
+                authorDto.setEmail(authorEmail);
+                dto.setAuthor(authorDto);
+            }
             
             // Set default values for fields not included in native query
             dto.setContent(""); // Content not included to avoid mapping issues

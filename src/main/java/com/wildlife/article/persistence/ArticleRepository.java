@@ -92,8 +92,10 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, JpaSpec
      */
     @Query(value = "SELECT a.id, a.title, a.excerpt, a.category, a.published, a.featured, " +
                    "a.views, a.author_id, a.created_at, a.updated_at, a.publish_date, " +
-                   "a.images " +
-                   "FROM articles a WHERE a.published = true " +
+                   "a.images, u.name as author_name, u.email as author_email " +
+                   "FROM articles a " +
+                   "LEFT JOIN users u ON a.author_id = u.id " +
+                   "WHERE a.published = true " +
                    "ORDER BY a.publish_date DESC", 
            nativeQuery = true)
     List<Object[]> findPublishedArticlesNative(Pageable pageable);

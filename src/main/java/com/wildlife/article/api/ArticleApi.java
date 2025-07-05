@@ -88,17 +88,19 @@ public interface ArticleApi {
     @Operation(summary = "Get articles by category", 
                description = "Retrieve published articles in a specific category")
     @GetMapping("/category/{category}")
-    ResponseEntity<Page<ArticleDto>> getArticlesByCategory(
+    ResponseEntity<ApiResponse.ArticleDataResponse<ArticleDto>> getArticlesByCategory(
             @Parameter(description = "Category name") @PathVariable String category,
-            Pageable pageable);
+            @Parameter(description = "Page number (1-based)") @RequestParam(defaultValue = "1") Integer page,
+            @Parameter(description = "Page size") @RequestParam(defaultValue = "10") Integer size);
 
     @Operation(summary = "Search articles", 
                description = "Search published articles by title, content, or excerpt")
     @GetMapping("/search")
-    ResponseEntity<Page<ArticleDto>> searchArticles(
+    ResponseEntity<ApiResponse.ArticleDataResponse<ArticleDto>> searchArticles(
             @Parameter(description = "Search term", required = true) 
             @RequestParam String q,
-            Pageable pageable);
+            @Parameter(description = "Page number (1-based)") @RequestParam(defaultValue = "1") Integer page,
+            @Parameter(description = "Page size") @RequestParam(defaultValue = "10") Integer size);
 
     @Operation(summary = "Get most viewed articles", 
                description = "Retrieve articles ordered by view count")

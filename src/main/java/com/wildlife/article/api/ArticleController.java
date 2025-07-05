@@ -138,16 +138,32 @@ public class ArticleController implements ArticleApi {
 
     @Override
     @GetMapping("/category/{category}")
-    public ResponseEntity<Page<ArticleDto>> getArticlesByCategory(@PathVariable String category, Pageable pageable) {
+    public ResponseEntity<ApiResponse.ArticleDataResponse<ArticleDto>> getArticlesByCategory(
+            @PathVariable String category,
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size) {
+        
+        // Convert 1-based pagination from frontend to 0-based for Spring Data JPA
+        Pageable pageable = convertPagination(page, size);
         Page<ArticleDto> articles = articleService.getArticlesByCategory(category, pageable);
-        return ResponseEntity.ok(articles);
+        
+        // Return in frontend-compatible format
+        return ResponseEntity.ok(ApiResponse.ArticleDataResponse.fromPage(articles));
     }
 
     @Override
     @GetMapping("/search")
-    public ResponseEntity<Page<ArticleDto>> searchArticles(@RequestParam String q, Pageable pageable) {
+    public ResponseEntity<ApiResponse.ArticleDataResponse<ArticleDto>> searchArticles(
+            @RequestParam String q,
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size) {
+        
+        // Convert 1-based pagination from frontend to 0-based for Spring Data JPA
+        Pageable pageable = convertPagination(page, size);
         Page<ArticleDto> articles = articleService.searchArticles(q, pageable);
-        return ResponseEntity.ok(articles);
+        
+        // Return in frontend-compatible format
+        return ResponseEntity.ok(ApiResponse.ArticleDataResponse.fromPage(articles));
     }
 
     @Override
