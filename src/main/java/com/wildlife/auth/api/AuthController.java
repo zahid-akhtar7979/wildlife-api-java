@@ -200,4 +200,23 @@ public class AuthController {
             this.newPassword = newPassword;
         }
     }
+
+    @PostMapping("/refresh-token")
+    @PreAuthorize("isAuthenticated()")
+    @Operation(
+        summary = "Refresh JWT token", 
+        description = "Get a new JWT token before the current one expires",
+        security = @SecurityRequirement(name = "bearerAuth")
+    )
+    @ApiResponse(responseCode = "200", description = "Token refreshed successfully")
+    @ApiResponse(responseCode = "401", description = "Authentication required")
+    public ResponseEntity<LoginResponse> refreshToken() {
+        LoginResponse response = authService.refreshToken();
+        
+        if (response.isSuccess()) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(401).body(response);
+        }
+    }
 } 

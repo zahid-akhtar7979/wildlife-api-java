@@ -1,6 +1,7 @@
 package com.wildlife.upload.service;
 
 import com.cloudinary.Cloudinary;
+import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
 import com.wildlife.shared.constants.ApiConstants;
 import com.wildlife.shared.constants.ErrorConstants;
@@ -101,21 +102,21 @@ public class UploadService {
             // Generate unique public ID
             String publicId = generateVideoPublicId();
             
+            // Create transformation for eager optimization
+            Transformation transformation = new Transformation()
+                .width(UploadConstants.VIDEO_HD_WIDTH)
+                .height(UploadConstants.VIDEO_HD_HEIGHT)
+                .crop("limit")
+                .quality("auto:good")
+                .videoCodec("h264");
+            
             // Upload to Cloudinary with video transformations
             Map<String, Object> uploadParams = ObjectUtils.asMap(
-                UploadConstants.CLOUDINARY_FOLDER, UploadConstants.FOLDER_WILDLIFE_VIDEOS,
-                UploadConstants.CLOUDINARY_PUBLIC_ID, publicId,
-                UploadConstants.CLOUDINARY_RESOURCE_TYPE, UploadConstants.RESOURCE_TYPE_VIDEO,
-                UploadConstants.CLOUDINARY_EAGER, Arrays.asList(
-                    ObjectUtils.asMap(
-                        UploadConstants.CLOUDINARY_WIDTH, UploadConstants.VIDEO_HD_WIDTH,
-                        UploadConstants.CLOUDINARY_HEIGHT, UploadConstants.VIDEO_HD_HEIGHT,
-                        UploadConstants.CLOUDINARY_CROP, UploadConstants.CROP_LIMIT,
-                        UploadConstants.CLOUDINARY_QUALITY, UploadConstants.QUALITY_AUTO_GOOD,
-                        UploadConstants.CLOUDINARY_VIDEO_CODEC, UploadConstants.VIDEO_CODEC_H264
-                    )
-                ),
-                UploadConstants.CLOUDINARY_EAGER_ASYNC, true // Process transformations asynchronously
+                "folder", UploadConstants.FOLDER_WILDLIFE_VIDEOS,
+                "public_id", publicId,
+                "resource_type", "video",
+                "eager", Arrays.asList(transformation),
+                "eager_async", true // Process transformations asynchronously
             );
             
             Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(), uploadParams);
