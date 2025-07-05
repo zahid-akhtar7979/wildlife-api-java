@@ -133,6 +133,16 @@ public class UserService {
             user.setEmail(userDto.getEmail());
         }
 
+        // Handle bio update
+        if (userDto.getBio() != null) {
+            user.setBio(userDto.getBio());
+        }
+
+        // Handle profile picture URL update
+        if (userDto.getProfilePictureUrl() != null) {
+            user.setProfilePictureUrl(userDto.getProfilePictureUrl());
+        }
+
         User savedUser = userRepository.save(user);
         logger.info("Updated profile for user ID: {}", savedUser.getId());
         

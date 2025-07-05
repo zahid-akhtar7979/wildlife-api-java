@@ -30,6 +30,12 @@ public class UserDto {
     private LocalDateTime updatedAt;
     private Long articleCount;
 
+    @Size(max = 1000, message = "Bio should not exceed 1000 characters")
+    private String bio;
+
+    @Size(max = 500, message = "Profile picture URL should not exceed 500 characters")
+    private String profilePictureUrl;
+
     // Constructors
     public UserDto() {}
 
@@ -113,6 +119,22 @@ public class UserDto {
 
     public void setArticleCount(Long articleCount) {
         this.articleCount = articleCount;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
     }
 
     @Override

@@ -58,6 +58,14 @@ public class User {
     @Column(nullable = false)
     private Boolean enabled = true;
 
+    @Size(max = 1000, message = "Bio should not exceed 1000 characters")
+    @Column(length = 1000)
+    private String bio;
+
+    @Size(max = 500, message = "Profile picture URL should not exceed 500 characters")
+    @Column(name = "profile_picture_url", length = 500)
+    private String profilePictureUrl;
+
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -159,6 +167,22 @@ public class User {
 
     public void setArticles(List<Article> articles) {
         this.articles = articles;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
     }
 
     // Utility methods - temporarily commented out due to Article entity changes

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wildlife.article.api.ArticleDto;
 import com.wildlife.article.core.Article;
+import com.wildlife.user.service.UserService;
 import com.wildlife.user.persistence.UserMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,6 +13,7 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,17 +26,23 @@ import java.util.Map;
 @Mapper(componentModel = "spring", 
         uses = UserMapper.class,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-public interface ArticleMapper {
+public abstract class ArticleMapper {
     
-    Logger logger = LoggerFactory.getLogger(ArticleMapper.class);
-    ObjectMapper objectMapper = new ObjectMapper();
+    private static final Logger logger = LoggerFactory.getLogger(ArticleMapper.class);
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Autowired
+    protected UserService userService;
+
+    @Autowired
+    protected UserMapper userMapper;
 
     /**
      * Convert Article entity to ArticleDto
      */
     @Mapping(target = "authorId", source = "authorId")
-    @Mapping(target = "author", ignore = true)
-    ArticleDto toDto(Article article);
+    @Mapping(target = "author", expression = "java(userMapper.toDto(userService.getUserEntityById(article.getAuthorId())))")
+    public abstract ArticleDto toDto(Article article);
 
     /**
      * Convert ArticleDto to Article entity
@@ -43,17 +51,17 @@ public interface ArticleMapper {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "publishDate", ignore = true)
-    Article toEntity(ArticleDto articleDto);
+    public abstract Article toEntity(ArticleDto articleDto);
 
     /**
      * Convert list of Article entities to list of ArticleDtos
      */
-    List<ArticleDto> toDto(List<Article> articles);
+    public abstract List<ArticleDto> toDto(List<Article> articles);
 
     /**
      * Convert list of ArticleDtos to list of Article entities
      */
-    List<Article> toEntity(List<ArticleDto> articleDtos);
+    public abstract List<Article> toEntity(List<ArticleDto> articleDtos);
 
     /**
      * Update existing Article entity with ArticleDto data
@@ -64,12 +72,12 @@ public interface ArticleMapper {
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "publishDate", ignore = true)
     @Mapping(target = "views", ignore = true)
-    void updateEntityFromDto(ArticleDto articleDto, @MappingTarget Article article);
+    public abstract void updateEntityFromDto(ArticleDto articleDto, @MappingTarget Article article);
 
     /**
      * Convert JSON string to List of image objects
      */
-    default List<Map<String, Object>> map(String json) {
+    protected List<Map<String, Object>> map(String json) {
         if (json == null || json.trim().isEmpty() || "[]".equals(json.trim())) {
             return new ArrayList<>();
         }
@@ -86,7 +94,7 @@ public interface ArticleMapper {
     /**
      * Convert List of objects to JSON string
      */
-    default String map(List<Map<String, Object>> list) {
+    protected String map(List<Map<String, Object>> list) {
         if (list == null || list.isEmpty()) {
             return "[]";
         }
