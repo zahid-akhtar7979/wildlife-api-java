@@ -20,6 +20,8 @@ WORKDIR /app
 # Copy the JAR file from builder stage
 COPY --from=builder /app/target/wildlife-api-*.jar app.jar
 
+ENV JAVA_OPTS="-Xmx350m -Xms128m"
+
 # Expose port (Railway will set PORT env variable dynamically)
 EXPOSE $PORT
 
